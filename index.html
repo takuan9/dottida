@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ff6347;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #ff6347;
+        }
+
+        img {
+            width: 300px;
+            height: auto;
+            margin: 20px;
+            cursor: pointer;
+            border: 5px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        img:hover {
+            border-color: #ffa07a;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        #result {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        #score {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>ランブータンどっちだげーむ</h1>
+    <button onclick="startgame()">スタートボタン</button>
+
+    <img id="imgone" onclick="imgwork(event)" src="" style="display: none;">
+    <img id="imgtwo" onclick="imgwork(event)" src="" style="display: none;">
+
+    <p>結果👇</p>
+    <p id="result"></p>
+    <p id="score">正解: 0, 間違い: 0</p>
+
+    <script>
+        const imgone = document.getElementById("imgone");
+        const imgtwo = document.getElementById("imgtwo");
+        const result = document.getElementById("result");
+        const score = document.getElementById("score");
+        
+        let correctCount = 0;
+        let mistakeCount = 0;
+        let attempts = 0;
+        const maxAttempts = 10; // 最大回答数
+
+        function startgame() {
+            if (attempts >= maxAttempts) {
+                // 10回目の回答後にゲーム終了
+                imgone.style.display = "none";
+                imgtwo.style.display = "none";
+                result.textContent = "ゲーム終了！";
+                return;
+            }
+
+            imgone.style.display = "block";
+            imgtwo.style.display = "block";
+
+            const randomnumber = Math.floor(Math.random() * 2);
+            const randomnumber2 = Math.floor(Math.random() * 2);
+            const randomnumberimg = Math.floor(Math.random() * 2);
+
+            if (randomnumberimg === 0) {
+                imgone.src = `./images/raiti/raiti${randomnumber}.jpeg`;
+                imgtwo.src = `./images/ranbutan/ranbutan${randomnumber2}.jpeg`;
+            } else {
+                imgone.src = `./images/ranbutan/ranbutan${randomnumber2}.jpeg`;
+                imgtwo.src = `./images/raiti/raiti${randomnumber}.jpeg`;
+            }
+        }
+
+        function imgwork(event) {
+            if (attempts >= maxAttempts) return;
+
+            const clickedimg = event.target.src;
+            const israiti = clickedimg.includes("raiti");
+
+            if (israiti) {
+                result.textContent = "あたり！";
+                correctCount++;
+            } else {
+                result.textContent = "ちがう！";
+                mistakeCount++;
+            }
+
+            attempts++;
+            score.textContent = `正解: ${correctCount}, 間違い: ${mistakeCount}`;
+
+            if (attempts < maxAttempts) {
+                setTimeout(startgame, 1000);
+            } else {
+                result.textContent = "ゲーム終了！";
+            }
+        }
+    </script>
+</body>
+</html>
